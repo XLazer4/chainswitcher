@@ -5,7 +5,13 @@ if (typeof window.ethereum !== "undefined") {
 
 // Function to connect to Polygon network
 async function connectToPolygon() {
-  await connectToNetwork("Polygon", "0x89");
+  await connectToNetwork("Polygon", "0x89", {
+    chainId: "0x89",
+    chainName: "Matic Mainnet",
+    nativeCurrency: { name: "Matic", symbol: "MATIC", decimals: 18 },
+    rpcUrls: ["https://polygon-rpc.com"],
+    blockExplorerUrls: ["https://polygonscan.com"],
+  });
 }
 
 // Function to connect to Meter network
