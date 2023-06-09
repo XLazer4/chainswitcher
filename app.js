@@ -32,19 +32,60 @@ async function connectToNetwork(networkName, networkId) {
       console.log(`Connected to ${networkName} network!`);
       // You can perform further actions on the target network here
     } else {
-      // Switch to the target network in MetaMask
-      try {
-        await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: networkId }],
-        });
-        console.log(`Switched to ${networkName} network!`);
-        // You can perform further actions on the target network here
-      } catch (error) {
-        console.log(`Failed to switch to ${networkName} network:`, error);
+      // Check if the target network is already added to MetaMask
+      const networkData = await getNetworkData(networkId);
+      if (networkData) {
+        // Switch to the target network in MetaMask
+        try {
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: networkId }],
+          });
+          console.log(`Switched to ${networkName} network!`);
+          // You can perform further actions on the target network here
+        } catch (error) {
+          console.log(`Failed to switch to ${networkName} network:`, error);
+        }
+      } else {
+        // Add the target network to MetaMask
+        try {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: 82,
+                chainName: Meter,
+                rpcUrls: ["https://rpc.meter.io"],
+                nativeCurrency: { name: "Meter", symbol: "MTR" },
+                blockExplorerUrls: ["https://scan.meter.io"],
+              },
+            ],
+          });
+          console.log(`Added ${networkName} network to MetaMask!`);
+          // Switch to the added network in MetaMask
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: networkId }],
+          });
+          console.log(`Switched to ${networkName} network!`);
+          // You can perform further actions on the target network here
+        } catch (error) {
+          console.log(
+            `Failed to add ${networkName} network to MetaMask:`,
+            error
+          );
+        }
       }
     }
   } catch (error) {
     console.log(`Failed to connect to ${networkName} network:`, error);
   }
+}
+
+// Function to check if a network is already added to MetaMask
+async function getNetworkData(networkId) {
+  const networks = await window.ethereum.request({
+    method: "wallet_getNetworks",
+  });
+  return networks.find((network) => network.chainId === networkId);
 }
