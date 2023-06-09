@@ -53,7 +53,7 @@ async function connectToNetwork(networkName, networkId) {
             method: "wallet_addEthereumChain",
             params: [
               {
-                chainId: 82,
+                chainId: "0x52",
                 chainName: "Meter",
                 rpcUrls: ["https://rpc.meter.io"],
                 nativeCurrency: { name: "Meter", symbol: "MTR" },
