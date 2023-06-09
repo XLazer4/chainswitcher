@@ -15,7 +15,7 @@ async function connectToMeter() {
 
 // Function to connect to Telos network
 async function connectToTelos() {
-  await connectToNetwork("Telos", "0x28");
+  await connectToNetwork("Telos", "0x586");
 }
 
 // Function to connect to a specific network
@@ -34,8 +34,7 @@ async function connectToNetwork(networkName, networkId) {
       // You can perform further actions on the target network here
     } else {
       // Check if the target network is already added to MetaMask
-      const networkData = await getNetworkData(networkId);
-      if (networkData) {
+      if (chainId === networkId) {
         // Switch to the target network in MetaMask
         try {
           await window.ethereum.request({
@@ -50,28 +49,17 @@ async function connectToNetwork(networkName, networkId) {
       } else {
         // Add the target network to MetaMask
         try {
-          let networkParams;
-          if (networkName === "Meter") {
-            networkParams = {
-              chainId: "0x52",
-              chainName: "Meter Mainnet",
-              nativeCurrency: { name: "Meter", symbol: "MTR", decimals: 18 },
-              rpcUrls: ["https://rpc.meter.io"],
-              blockExplorerUrls: ["https://scan.meter.io"],
-            };
-          } else if (networkName === "Telos") {
-            networkParams = {
-              chainId: "0x28",
-              chainName: "Telos Mainnet",
-              nativeCurrency: { name: "Telos", symbol: "TLOS", decimals: 18 },
-              rpcUrls: ["https://mainnet.telos.net/evm"],
-              blockExplorerUrls: ["https://teloscan.io"],
-            };
-          }
-
           await window.ethereum.request({
             method: "wallet_addEthereumChain",
-            params: [networkParams],
+            params: [
+              {
+                chainId: "0x52",
+                chainName: "Meter",
+                nativeCurrency: { name: "Meter", symbol: "MTR", decimals: 18 },
+                rpcUrls: ["https://rpc.meter.io"],
+                blockExplorerUrls: ["https://scan.meter.io"],
+              },
+            ],
           });
           console.log(`Added ${networkName} network to MetaMask!`);
           // Switch to the added network in MetaMask
@@ -92,10 +80,4 @@ async function connectToNetwork(networkName, networkId) {
   } catch (error) {
     console.log(`Failed to connect to ${networkName} network:`, error);
   }
-}
-
-// Function to check if a network is already added to MetaMask
-async function getNetworkData(networkId) {
-  const networks = await window.ethereum.request({ method: "eth_getNetworks" });
-  return networks.find((network) => network.chainId === networkId);
 }
