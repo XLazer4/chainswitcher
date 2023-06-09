@@ -10,16 +10,28 @@ async function connectToPolygon() {
 
 // Function to connect to Meter network
 async function connectToMeter() {
-  await connectToNetwork("Meter", "0x52");
+  await connectToNetwork("Meter", "0x52", {
+    chainId: "0x52",
+    chainName: "Meter",
+    nativeCurrency: { name: "Meter", symbol: "MTR", decimals: 18 },
+    rpcUrls: ["https://rpc.meter.io"],
+    blockExplorerUrls: ["https://scan.meter.io"],
+  });
 }
 
 // Function to connect to Telos network
 async function connectToTelos() {
-  await connectToNetwork("Telos", "0x586");
+  await connectToNetwork("Telos", "0x28", {
+    chainId: "0x28",
+    chainName: "Telos EVM Mainnet",
+    nativeCurrency: { name: "Telos", symbol: "TLOS", decimals: 18 },
+    rpcUrls: ["https://mainnet.telos.net/evm"],
+    blockExplorerUrls: ["https://teloscan.io"],
+  });
 }
 
 // Function to connect to a specific network
-async function connectToNetwork(networkName, networkId) {
+async function connectToNetwork(networkName, networkId, networkDetails) {
   try {
     // Request access to the user's MetaMask accounts
     await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -51,15 +63,16 @@ async function connectToNetwork(networkName, networkId) {
         try {
           await window.ethereum.request({
             method: "wallet_addEthereumChain",
-            params: [
-              {
-                chainId: "0x52",
-                chainName: "Meter",
-                nativeCurrency: { name: "Meter", symbol: "MTR", decimals: 18 },
-                rpcUrls: ["https://rpc.meter.io"],
-                blockExplorerUrls: ["https://scan.meter.io"],
-              },
-            ],
+            params: [networkDetails],
+            // params: [
+            //   {
+            //     chainId: "0x52",
+            //     chainName: "Meter",
+            //     nativeCurrency: { name: "Meter", symbol: "MTR", decimals: 18 },
+            //     rpcUrls: ["https://rpc.meter.io"],
+            //     blockExplorerUrls: ["https://scan.meter.io"],
+            //   },
+            // ],
           });
           console.log(`Added ${networkName} network to MetaMask!`);
           // Switch to the added network in MetaMask
