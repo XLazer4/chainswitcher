@@ -54,7 +54,7 @@ async function connectToNetwork(networkName, networkId) {
             params: [
               {
                 chainId: 82,
-                chainName: Meter,
+                chainName: "Meter",
                 rpcUrls: ["https://rpc.meter.io"],
                 nativeCurrency: { name: "Meter", symbol: "MTR" },
                 blockExplorerUrls: ["https://scan.meter.io"],
