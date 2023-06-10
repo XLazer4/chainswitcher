@@ -105,7 +105,7 @@ async function connectToNetwork(networkName, networkId, networkDetails) {
 async function displayWalletAddress() {
   const accounts = await window.ethereum.request({ method: "eth_accounts" });
   const walletAddress = accounts[0];
-  document.getElementById("walletAddress").value = walletAddress;
+  document.getElementById("walletAddress").textContent = walletAddress;
 }
 
 async function copyWalletAddress() {
