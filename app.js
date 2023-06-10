@@ -70,15 +70,6 @@ async function connectToNetwork(networkName, networkId, networkDetails) {
           await window.ethereum.request({
             method: "wallet_addEthereumChain",
             params: [networkDetails],
-            // params: [
-            //   {
-            //     chainId: "0x52",
-            //     chainName: "Meter",
-            //     nativeCurrency: { name: "Meter", symbol: "MTR", decimals: 18 },
-            //     rpcUrls: ["https://rpc.meter.io"],
-            //     blockExplorerUrls: ["https://scan.meter.io"],
-            //   },
-            // ],
           });
           console.log(`Added ${networkName} network to MetaMask!`);
           // Switch to the added network in MetaMask
@@ -117,7 +108,7 @@ async function copyWalletAddress() {
   try {
     const walletAddress = document.getElementById("walletAddress").textContent;
     await navigator.clipboard.writeText(walletAddress);
-    alert("Wallet address copied to clipboard");
+    // alert("Wallet address copied to clipboard");
   } catch (err) {
     alert("Error in copying wallet address: ", err);
   }
