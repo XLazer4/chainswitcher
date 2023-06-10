@@ -88,6 +88,7 @@ async function connectToNetwork(networkName, networkId, networkDetails) {
           });
           console.log(`Switched to ${networkName} network!`);
           // You can perform further actions on the target network here
+          showCopyWalletAddressButton();
           await displayWalletAddress();
         } catch (error) {
           console.log(
@@ -100,6 +101,10 @@ async function connectToNetwork(networkName, networkId, networkDetails) {
   } catch (error) {
     console.log(`Failed to connect to ${networkName} network:`, error);
   }
+}
+
+function showCopyWalletAddressButton() {
+  document.getElementById("copyWalletAddressButton").style.display = "inline";
 }
 
 async function displayWalletAddress() {
