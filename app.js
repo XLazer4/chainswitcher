@@ -61,7 +61,6 @@ async function connectToNetwork(networkName, networkId, networkDetails) {
           });
           console.log(`Switched to ${networkName} network!`);
           // You can perform further actions on the target network here
-          await displayWalletAddress();
         } catch (error) {
           console.log(`Failed to switch to ${networkName} network:`, error);
         }
@@ -89,6 +88,7 @@ async function connectToNetwork(networkName, networkId, networkDetails) {
           });
           console.log(`Switched to ${networkName} network!`);
           // You can perform further actions on the target network here
+          await displayWalletAddress();
         } catch (error) {
           console.log(
             `Failed to add ${networkName} network to MetaMask:`,
