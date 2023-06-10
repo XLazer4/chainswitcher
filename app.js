@@ -61,6 +61,7 @@ async function connectToNetwork(networkName, networkId, networkDetails) {
           });
           console.log(`Switched to ${networkName} network!`);
           // You can perform further actions on the target network here
+          await displayWalletAddress();
         } catch (error) {
           console.log(`Failed to switch to ${networkName} network:`, error);
         }
@@ -70,6 +71,15 @@ async function connectToNetwork(networkName, networkId, networkDetails) {
           await window.ethereum.request({
             method: "wallet_addEthereumChain",
             params: [networkDetails],
+            // params: [
+            //   {
+            //     chainId: "0x52",
+            //     chainName: "Meter",
+            //     nativeCurrency: { name: "Meter", symbol: "MTR", decimals: 18 },
+            //     rpcUrls: ["https://rpc.meter.io"],
+            //     blockExplorerUrls: ["https://scan.meter.io"],
+            //   },
+            // ],
           });
           console.log(`Added ${networkName} network to MetaMask!`);
           // Switch to the added network in MetaMask
@@ -92,24 +102,18 @@ async function connectToNetwork(networkName, networkId, networkDetails) {
   }
 }
 
-// Function to copy the wallet address to clipboard
-function copyWalletAddress() {
-  const walletAddressElement = document.getElementById("walletAddress");
+async function displayWalletAddress() {
+  const accounts = await window.ethereum.request({ method: "eth_accounts" });
+  const walletAddress = accounts[0];
+  document.getElementById("walletAddress").value = walletAddress;
+}
 
-  // Check if the wallet address element is present
-  if (walletAddressElement.innerText) {
-    const walletAddress = walletAddressElement.innerText;
-
-    // Use the Clipboard API to copy the wallet address to clipboard
-    navigator.clipboard
-      .writeText(walletAddress)
-      .then(() => {
-        // Display a success message
-        alert("Wallet address copied to clipboard!");
-      })
-      .catch((error) => {
-        // Display an error message if copying failed
-        console.log("Failed to copy wallet address:", error);
-      });
+async function copyWalletAddress() {
+  try {
+    const walletAddress = document.getElementById("walletAddress").value;
+    await navigator.clipboard.writeText(walletAddress);
+    alert("Wallet address copied to clipboard");
+  } catch (err) {
+    alert("Error in copying wallet address: ", err);
   }
 }
