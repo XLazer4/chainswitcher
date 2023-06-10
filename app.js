@@ -110,7 +110,7 @@ async function displayWalletAddress() {
 
 async function copyWalletAddress() {
   try {
-    const walletAddress = document.getElementById("walletAddress").value;
+    const walletAddress = document.getElementById("walletAddress").textContent;
     await navigator.clipboard.writeText(walletAddress);
     alert("Wallet address copied to clipboard");
   } catch (err) {
